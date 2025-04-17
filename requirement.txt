@@ -1,0 +1,10 @@
+streamlit
+Pillow
+requests
+opencv-python
+numpy
+av
+ultralytics
+yt-dlp
+deep-sort-realtime
+torch
