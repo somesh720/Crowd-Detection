@@ -3,7 +3,7 @@ Pillow
 requests
 opencv-python
 numpy
-av
+av==10.0.0
 ultralytics
 yt-dlp
 deep-sort-realtime
