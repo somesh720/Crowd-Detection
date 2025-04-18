@@ -8,5 +8,5 @@ ultralytics
 yt-dlp
 deep-sort-realtime
 torch
-
+onnxruntime
 
