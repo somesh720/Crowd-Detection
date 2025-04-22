@@ -15,7 +15,7 @@ from deep_sort_realtime.deepsort_tracker import DeepSort
 
 @st.cache_resource
 def load_model():
-    return YOLO("v11l.onnx", task="detect")
+    return YOLO("crowdyolov8n.onnx", task="detect")
 
 @st.cache_resource
 def load_tracker():
@@ -23,7 +23,11 @@ def load_tracker():
 
 @st.cache_data(show_spinner=False)
 def download_youtube_video_cached(url):
-    output_path = "temp_video.mp4"
+    youtube_id = extract_youtube_id(url)
+    if not youtube_id:
+        return None
+
+    output_path = f"temp_{youtube_id}.mp4"
     ydl_opts = {
         "format": "bestvideo[ext=mp4]",
         "outtmpl": output_path,
@@ -37,6 +41,7 @@ def download_youtube_video_cached(url):
         return output_path
     except Exception:
         return None
+
 
 @st.cache_data(show_spinner=False)
 def fetch_image_from_url(url):
@@ -196,7 +201,7 @@ def show_video_preview():
     for frame in video.decode(video=0):
         img = frame.to_ndarray(format="bgr24")
 
-        results = model(img, conf=0.2, iou=0.5)[0]
+        results = model(img, conf=0.3, iou=0.6,imgsz=640)[0]
         people_in_frame = sum(1 for cls in results.boxes.cls if int(cls.item()) == 0)
         max_people_detected = max(max_people_detected, people_in_frame)
 
